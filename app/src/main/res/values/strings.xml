@@ -2,4 +2,6 @@
     <string name="app_name">MyContacts</string>
     <string name="title_example">Иванов Иван Иванович</string>
     <string name="phone_example">+7(999)9999999</string>
+    <string name="label_example">Label example</string>
+    <string name="value_example">Value example</string>
 </resources>

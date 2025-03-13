@@ -1,5 +1,9 @@
 package me.arsnotfound.mycontacts.data;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class Contact {
@@ -7,52 +11,81 @@ public class Contact {
     private String lastName;
     private String middleName;
     private String phoneNumber;
+    private LocalDate dateOfBirth;
 
-    public Contact(String firstName, String lastName, String middleName, String phoneNumber) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.middleName = middleName;
-        this.phoneNumber = phoneNumber;
+    public Contact(
+            @NotNull String firstName,
+            @NotNull String lastName,
+            @NotNull String middleName,
+            @NotNull String phoneNumber,
+            @Nullable LocalDate dateOfBirth
+    ) {
+        setFirstName(firstName);
+        setLastName(lastName);
+        setMiddleName(middleName);
+        setPhoneNumber(phoneNumber);
+        setDateOfBirth(dateOfBirth);
+    }
+    
+    public Contact(
+            @NotNull String firstName, 
+            @NotNull String lastName, 
+            @NotNull String middleName, 
+            @NotNull String phoneNumber
+    ) {
+        this(firstName, lastName, middleName, phoneNumber, null);
     }
 
-    public Contact(String firstName, String lastName, String phoneNumber) {
+    public Contact(@NotNull String firstName, @NotNull String lastName, @NotNull String phoneNumber) {
         this(firstName, lastName, "", phoneNumber);
     }
 
-    public Contact(String firstName, String phoneNumber) {
+    public Contact(@NotNull String firstName, @NotNull String phoneNumber) {
         this(firstName, "", phoneNumber);
     }
 
-    public String getFirstName() {
+    public @NotNull String getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
+    public void setFirstName(@NotNull String firstName) {
+        Objects.requireNonNull(firstName);
         this.firstName = firstName;
     }
 
-    public String getLastName() {
+    public @NotNull String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    public void setLastName(@NotNull String lastName) {
+        Objects.requireNonNull(lastName);
         this.lastName = lastName;
     }
 
-    public String getMiddleName() {
+    public @NotNull String getMiddleName() {
         return middleName;
     }
 
-    public void setMiddleName(String middleName) {
+    public void setMiddleName(@NotNull String middleName) {
+        Objects.requireNonNull(middleName);
         this.middleName = middleName;
     }
 
-    public String getPhoneNumber() {
+    public @NotNull String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
+    public void setPhoneNumber(@NotNull String phoneNumber) {
+        Objects.requireNonNull(phoneNumber);
         this.phoneNumber = phoneNumber;
+    }
+
+    public @Nullable LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(@Nullable LocalDate date) {
+        this.dateOfBirth = date;
     }
 
     @Override
@@ -75,5 +108,9 @@ public class Contact {
                 ", middleName='" + middleName + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 '}';
+    }
+
+    public String getDisplayName() {
+        return String.join(" ", lastName, firstName, middleName);
     }
 }
