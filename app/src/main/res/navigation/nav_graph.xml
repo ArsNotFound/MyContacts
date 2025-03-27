@@ -8,5 +8,18 @@
     <fragment
         android:id="@+id/contactListFragment"
         android:name="me.arsnotfound.mycontacts.ui.fragment.ContactListFragment"
-        android:label="ContactListFragment" />
+        android:label="ContactListFragment" >
+        <action
+            android:id="@+id/navigate_to_contactInfoFragment"
+            app:destination="@id/contactInfoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/contactInfoFragment"
+        android:name="me.arsnotfound.mycontacts.ui.fragment.ContactInfoFragment"
+        android:label="fragment_contact_info"
+        tools:layout="@layout/fragment_contact_info" >
+        <argument
+            android:name="contact"
+            app:argType="me.arsnotfound.mycontacts.data.Contact" />
+    </fragment>
 </navigation>

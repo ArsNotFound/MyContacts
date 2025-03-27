@@ -4,4 +4,13 @@
     <string name="phone_example">+7(999)9999999</string>
     <string name="label_example">Label example</string>
     <string name="value_example">Value example</string>
+    <string name="last_name">Last Name</string>
+    <string name="last_name_example">Иванов</string>
+    <string name="first_name_example">Иван</string>
+    <string name="first_name">First Name</string>
+    <string name="middle_name">Middle Name</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="middle_name_example">Иванович</string>
+    <string name="day_of_birth">Day of Birth</string>
+    <string name="day_of_birth_example">01.01.1970</string>
 </resources>

@@ -1,12 +1,17 @@
 package me.arsnotfound.mycontacts.data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class Contact {
+public class Contact implements Parcelable {
     private String firstName;
     private String lastName;
     private String middleName;
@@ -42,6 +47,14 @@ public class Contact {
 
     public Contact(@NotNull String firstName, @NotNull String phoneNumber) {
         this(firstName, "", phoneNumber);
+    }
+
+    protected Contact(Parcel in) {
+        firstName = in.readString();
+        lastName = in.readString();
+        middleName = in.readString();
+        phoneNumber = in.readString();
+        dateOfBirth = (LocalDate) in.readSerializable();
     }
 
     public @NotNull String getFirstName() {
@@ -100,6 +113,7 @@ public class Contact {
         return Objects.hashCode(phoneNumber);
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "Contact{" +
@@ -107,10 +121,37 @@ public class Contact {
                 ", lastName='" + lastName + '\'' +
                 ", middleName='" + middleName + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
                 '}';
     }
 
     public String getDisplayName() {
         return String.join(" ", lastName, firstName, middleName);
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeString(firstName);
+        dest.writeString(lastName);
+        dest.writeString(middleName);
+        dest.writeString(phoneNumber);
+        dest.writeSerializable(dateOfBirth);
+    }
+
+    public static final Creator<Contact> CREATOR = new Creator<>() {
+        @Override
+        public Contact createFromParcel(Parcel in) {
+            return new Contact(in);
+        }
+
+        @Override
+        public Contact[] newArray(int size) {
+            return new Contact[size];
+        }
+    };
 }

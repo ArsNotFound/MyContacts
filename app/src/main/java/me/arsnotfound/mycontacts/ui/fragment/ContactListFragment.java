@@ -8,7 +8,10 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
+import java.time.LocalDate;
 import java.util.Locale;
 
 import me.arsnotfound.mycontacts.data.Contact;
@@ -27,11 +30,21 @@ public class ContactListFragment extends Fragment {
         for (int i = 0; i < contacts.length; i++)
             contacts[i] = new Contact(
                     "Иван " + i,
-                    "+7(999)99999" + String.format(Locale.getDefault(), "%02d", i)
+                    "Сухарев",
+                    "Александрович",
+                    "+7(999)99999" + String.format(Locale.getDefault(), "%02d", i),
+                    LocalDate.of(1999, 12, i % 31 + 1)
             );
 
         ContactAdapter adapter = new ContactAdapter(getContext(), contacts);
         binding.contactList.setAdapter(adapter);
+
+        binding.contactList.setOnItemClickListener((parent, view, pos, id) -> {
+            Contact contact = (Contact) binding.contactList.getAdapter().getItem(pos);
+            ContactListFragmentDirections.NavigateToContactInfoFragment directions =
+                    ContactListFragmentDirections.navigateToContactInfoFragment(contact);
+            NavHostFragment.findNavController(this).navigate(directions);
+        });
 
         return binding.getRoot();
     }
