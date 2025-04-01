@@ -58,9 +58,7 @@ public class ContactsDB {
         cv.put(COLUMN_LAST_NAME, contact.getLastName());
         cv.put(COLUMN_MIDDLE_NAME, contact.getMiddleName());
         cv.put(COLUMN_PHONE_NUMBER, contact.getPhoneNumber());
-
-        LocalDate dateOfBirth = contact.getDateOfBirth();
-        cv.put(COLUMN_DATE_OF_BIRTH, dateOfBirth != null ? dateOfBirth.format(DATE_TIME_FORMATTER) : null);
+        cv.put(COLUMN_DATE_OF_BIRTH, formatDate(contact.getDateOfBirth()));
         return database.update(TABLE_NAME, cv, COLUMN_ID + " = ?", new String[]{String.valueOf(contact.getID())});
     }
 
