@@ -12,11 +12,28 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class Contact implements Parcelable {
+    private long id;
     private String firstName;
     private String lastName;
     private String middleName;
     private String phoneNumber;
     private LocalDate dateOfBirth;
+
+    public Contact(
+            long id,
+            @NotNull String firstName,
+            @NotNull String lastName,
+            @NotNull String middleName,
+            @NotNull String phoneNumber,
+            @Nullable LocalDate dateOfBirth
+    ) {
+        setID(id);
+        setFirstName(firstName);
+        setLastName(lastName);
+        setMiddleName(middleName);
+        setPhoneNumber(phoneNumber);
+        setDateOfBirth(dateOfBirth);
+    }
 
     public Contact(
             @NotNull String firstName,
@@ -25,11 +42,7 @@ public class Contact implements Parcelable {
             @NotNull String phoneNumber,
             @Nullable LocalDate dateOfBirth
     ) {
-        setFirstName(firstName);
-        setLastName(lastName);
-        setMiddleName(middleName);
-        setPhoneNumber(phoneNumber);
-        setDateOfBirth(dateOfBirth);
+        this(0, firstName, lastName, middleName, phoneNumber, dateOfBirth);
     }
     
     public Contact(
@@ -38,7 +51,7 @@ public class Contact implements Parcelable {
             @NotNull String middleName, 
             @NotNull String phoneNumber
     ) {
-        this(firstName, lastName, middleName, phoneNumber, null);
+        this( firstName, lastName, middleName, phoneNumber, null);
     }
 
     public Contact(@NotNull String firstName, @NotNull String lastName, @NotNull String phoneNumber) {
@@ -55,6 +68,14 @@ public class Contact implements Parcelable {
         middleName = in.readString();
         phoneNumber = in.readString();
         dateOfBirth = (LocalDate) in.readSerializable();
+    }
+
+    public long getID() {
+        return id;
+    }
+
+    public void setID(long id) {
+        this.id = id;
     }
 
     public @NotNull String getFirstName() {
