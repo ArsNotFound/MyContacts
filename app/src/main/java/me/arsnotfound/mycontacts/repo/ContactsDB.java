@@ -5,18 +5,21 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import me.arsnotfound.mycontacts.data.Contact;
 
 public class ContactsDB {
+    private static final String TAG = "ContactsDB";
     private static final String DATABASE_NAME = "contacts.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String TABLE_NAME = "contacts";
 
     private static final String COLUMN_ID = "id";
@@ -33,7 +36,7 @@ public class ContactsDB {
     private static final int NUM_COLUMN_PHONE_NUMBER = 4;
     private static final int NUM_COLUMN_DATE_OF_BIRTH = 5;
 
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ISO_DATE_TIME;
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ISO_DATE;
 
     private final SQLiteDatabase database;
 
@@ -146,10 +149,29 @@ public class ContactsDB {
                     COLUMN_DATE_OF_BIRTH + " TEXT" +
                     ");";
             db.execSQL(query);
+
+            for (int i = 0; i < 100; i++) {
+                String insQuery = "INSERT INTO " + TABLE_NAME + " (" +
+                        COLUMN_FIRST_NAME + ", " +
+                        COLUMN_LAST_NAME + ", " +
+                        COLUMN_MIDDLE_NAME + ", " +
+                        COLUMN_PHONE_NUMBER + ", " +
+                        COLUMN_DATE_OF_BIRTH +
+                        ") VALUES (" +
+                        "'Иван " + i + "', " +
+                        "'Сухарев', " +
+                        "'Александрович', " +
+                        "'+7(999)99999" + String.format(Locale.getDefault(), "%02d", i) + "', " +
+                        "'" + LocalDate.of(1999, 12, i % 31 + 1).format(DATE_TIME_FORMATTER) + "'" +
+                        ");";
+                Log.i(TAG, insQuery);
+                db.execSQL(insQuery);
+            }
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+            Log.i(TAG, "Upgrade from " + oldVersion + " to " + newVersion);
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
             onCreate(db);
         }

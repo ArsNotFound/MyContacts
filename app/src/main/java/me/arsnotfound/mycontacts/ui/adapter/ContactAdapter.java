@@ -9,12 +9,18 @@ import android.widget.ArrayAdapter;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.util.List;
+
 import me.arsnotfound.mycontacts.data.Contact;
 import me.arsnotfound.mycontacts.R;
 import me.arsnotfound.mycontacts.databinding.ItemListContactBinding;
 
 public class ContactAdapter extends ArrayAdapter<Contact> {
     public ContactAdapter(Context context, Contact[] array) {
+        super(context, R.layout.item_list_contact, array);
+    }
+
+    public ContactAdapter(Context context, List<Contact> array) {
         super(context, R.layout.item_list_contact, array);
     }
 

@@ -9,11 +9,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import me.arsnotfound.mycontacts.MyContactsApplication;
 import me.arsnotfound.mycontacts.data.Contact;
 import me.arsnotfound.mycontacts.databinding.FragmentContactInfoBinding;
+import me.arsnotfound.mycontacts.repo.ContactsDB;
 
 public class ContactInfoFragment extends Fragment {
     private FragmentContactInfoBinding binding;
+
+    private ContactsDB db;
 
     private ContactInfoFragmentArgs args;
 
@@ -27,8 +31,11 @@ public class ContactInfoFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
        binding = FragmentContactInfoBinding.inflate(inflater, container, false);
+       db = ((MyContactsApplication)getActivity().getApplication()).getContactsDB();
 
-       Contact contact = args.getContact();
+       long contactId = args.getContactId();
+
+       Contact contact = db.select(contactId);
 
        binding.contactLastName.setValue(contact.getLastName());
        binding.contactFirstName.setValue(contact.getFirstName());
@@ -46,5 +53,6 @@ public class ContactInfoFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+        db = null;
     }
 }
