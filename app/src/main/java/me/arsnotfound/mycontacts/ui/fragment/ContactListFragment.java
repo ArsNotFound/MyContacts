@@ -30,16 +30,15 @@ public class ContactListFragment extends Fragment {
         db = ((MyContactsApplication)getActivity().getApplication()).getContactsDB();
 
         List<Contact> contacts = db.selectAll();
-
         ContactAdapter adapter = new ContactAdapter(getContext(), contacts);
-        binding.contactList.setAdapter(adapter);
-
-        binding.contactList.setOnItemClickListener((parent, view, pos, id) -> {
-            Contact contact = (Contact) binding.contactList.getAdapter().getItem(pos);
+        adapter.setOnItemClickListener((view, contact) -> {
             ContactListFragmentDirections.NavigateToContactInfoFragment directions =
                     ContactListFragmentDirections.navigateToContactInfoFragment(contact.getID());
             NavHostFragment.findNavController(this).navigate(directions);
         });
+
+
+        binding.contactList.setAdapter(adapter);
 
         return binding.getRoot();
     }

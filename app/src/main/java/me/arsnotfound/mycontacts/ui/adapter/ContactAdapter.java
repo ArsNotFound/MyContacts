@@ -4,44 +4,62 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
 import me.arsnotfound.mycontacts.data.Contact;
-import me.arsnotfound.mycontacts.R;
 import me.arsnotfound.mycontacts.databinding.ItemListContactBinding;
 
-public class ContactAdapter extends ArrayAdapter<Contact> {
-    public ContactAdapter(Context context, Contact[] array) {
-        super(context, R.layout.item_list_contact, array);
-    }
+public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHolder> {
+    private final LayoutInflater inflater;
+    private final List<Contact> contactList;
+    private OnItemClickListener onItemClickListener;
 
-    public ContactAdapter(Context context, List<Contact> array) {
-        super(context, R.layout.item_list_contact, array);
+    public ContactAdapter(Context context, List<Contact> contactList) {
+        this.inflater = LayoutInflater.from(context);
+        this.contactList = contactList;
     }
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        Contact contact = getItem(position);
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        ItemListContactBinding binding = ItemListContactBinding.inflate(inflater);
+        return new ViewHolder(binding);
+    }
 
-        ItemListContactBinding binding;
-        if (convertView == null) {
-            LayoutInflater inflater = LayoutInflater.from(getContext());
-            binding = ItemListContactBinding.inflate(inflater, null, false);
-        } else {
-            binding = ItemListContactBinding.bind(convertView);
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        final Contact contact = contactList.get(position);
+        holder.binding.title.setText(contact.getDisplayName());
+        holder.binding.phoneNumber.setText(contact.getPhoneNumber());
+        holder.binding.getRoot().setOnClickListener((view) -> {
+            if (this.onItemClickListener != null)
+                this.onItemClickListener.onItemClick(view, contact);
+        });
+    }
+
+    @Override
+    public int getItemCount() {
+        return contactList.size();
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.onItemClickListener = listener;
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        final ItemListContactBinding binding;
+
+        public ViewHolder(ItemListContactBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
+    }
 
-        assert contact != null;
-
-        binding.title.setText(contact.getDisplayName());
-        binding.phoneNumber.setText(contact.getPhoneNumber());
-
-        return binding.getRoot();
+    public interface OnItemClickListener {
+        void onItemClick(View view, Contact contact);
     }
 }
