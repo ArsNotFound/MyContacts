@@ -27,7 +27,7 @@ public class ContactListFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentContactListBinding.inflate(inflater, container, false);
-        db = ((MyContactsApplication)getActivity().getApplication()).getContactsDB();
+        db = ((MyContactsApplication) getActivity().getApplication()).getContactsDB();
 
         List<Contact> contacts = db.selectAll();
         ContactAdapter adapter = new ContactAdapter(getContext(), contacts);
@@ -36,6 +36,11 @@ public class ContactListFragment extends Fragment {
                     ContactListFragmentDirections.navigateToContactInfoFragment(contact.getID());
             NavHostFragment.findNavController(this).navigate(directions);
         });
+        adapter.setOnItemLongClickListener(((view, contact) -> {
+            ContactListFragmentDirections.NavigateToContactEditFragment directions =
+                    ContactListFragmentDirections.navigateToContactEditFragment(contact.getID());
+            NavHostFragment.findNavController(this).navigate(directions);
+        }));
 
 
         binding.contactList.setAdapter(adapter);

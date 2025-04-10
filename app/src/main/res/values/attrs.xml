@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="title" format="string" localization="suggested" />
+    <attr name="hint" format="string" localization="suggested" />
+    <declare-styleable name="ContactInfoItem">
+        <attr name="title" />
+        <attr name="value" format="string" localization="suggested" />
+    </declare-styleable>
+    <declare-styleable name="ContactTextEditItem">
+        <attr name="title" />
+        <attr name="hint" />
+    </declare-styleable>
+    <declare-styleable name="ContactDateEditItem">
+        <attr name="title" />
+        <attr name="hint" />
+    </declare-styleable>
+</resources>

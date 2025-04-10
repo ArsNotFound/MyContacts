@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:custom="http://schemas.android.com/apk/res-auto">
+
+    <me.arsnotfound.mycontacts.ui.view.ContactTextEditItem
+        android:id="@+id/contact_first_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        custom:hint="@string/first_name_example"
+        custom:title="@string/first_name"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <me.arsnotfound.mycontacts.ui.view.ContactTextEditItem
+        android:id="@+id/contact_last_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        custom:hint="@string/last_name_example"
+        custom:title="@string/last_name"
+        app:layout_constraintTop_toBottomOf="@id/contact_first_name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <me.arsnotfound.mycontacts.ui.view.ContactTextEditItem
+        android:id="@+id/contact_middle_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        custom:hint="@string/middle_name_example"
+        custom:title="@string/middle_name"
+        app:layout_constraintTop_toBottomOf="@id/contact_last_name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <me.arsnotfound.mycontacts.ui.view.ContactTextEditItem
+        android:id="@+id/contact_phone_number"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        custom:hint="@string/phone_example"
+        custom:title="@string/phone_number"
+        app:layout_constraintTop_toBottomOf="@id/contact_middle_name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <me.arsnotfound.mycontacts.ui.view.ContactDateEditItem
+        android:id="@+id/contact_day_of_birth"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        custom:hint="@string/day_of_birth_example"
+        custom:title="@string/day_of_birth"
+        app:layout_constraintTop_toBottomOf="@id/contact_phone_number"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

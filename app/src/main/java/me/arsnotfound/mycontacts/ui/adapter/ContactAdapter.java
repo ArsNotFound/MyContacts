@@ -18,6 +18,8 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
     private final List<Contact> contactList;
     private OnItemClickListener onItemClickListener;
 
+    private OnItemClickListener onItemLongClickListener;
+
     public ContactAdapter(Context context, List<Contact> contactList) {
         this.inflater = LayoutInflater.from(context);
         this.contactList = contactList;
@@ -39,6 +41,12 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
             if (this.onItemClickListener != null)
                 this.onItemClickListener.onItemClick(view, contact);
         });
+        holder.binding.getRoot().setOnLongClickListener((view) -> {
+            if (this.onItemLongClickListener != null) {
+                this.onItemLongClickListener.onItemClick(view, contact);
+            }
+            return true;
+        });
     }
 
     @Override
@@ -48,6 +56,10 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.onItemClickListener = listener;
+    }
+
+    public void setOnItemLongClickListener(OnItemClickListener listener) {
+        this.onItemLongClickListener = listener;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

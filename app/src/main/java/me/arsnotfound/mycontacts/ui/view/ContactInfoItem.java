@@ -17,7 +17,7 @@ public class ContactInfoItem extends ConstraintLayout {
     private String title;
     private String value;
 
-    private ItemInfoContactBinding binding;
+    private final ItemInfoContactBinding binding;
 
     public ContactInfoItem(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
