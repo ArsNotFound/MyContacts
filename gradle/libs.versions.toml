@@ -29,4 +29,4 @@ room-testing = { group = "androidx.room", name = "room-testing", version.ref = "
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 androidx-navigation-safeargs = { id = "androidx.navigation.safeargs", version.ref = "navigation" }
-
+room = { id="androidx.room", version.ref = "room" }

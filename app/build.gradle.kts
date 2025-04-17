@@ -1,16 +1,17 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.androidx.navigation.safeargs)
+    alias(libs.plugins.room)
 }
 
 android {
     namespace = "me.arsnotfound.mycontacts"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "me.arsnotfound.mycontacts"
         minSdk = 26
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -35,6 +36,10 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+}
+
+room {
+    schemaDirectory("$projectDir/schemas")
 }
 
 dependencies {
