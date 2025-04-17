@@ -1,4 +1,4 @@
-package me.arsnotfound.mycontacts.repo;
+package me.arsnotfound.mycontacts.repo.sqlite;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -15,11 +15,12 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import me.arsnotfound.mycontacts.data.Contact;
+import me.arsnotfound.mycontacts.data.ContactRepository;
 
-public class ContactsDB {
+public class ContactSQLiteRepository implements ContactRepository {
     private static final String TAG = "ContactsDB";
     private static final String DATABASE_NAME = "contacts.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
     private static final String TABLE_NAME = "contacts";
 
     private static final String COLUMN_ID = "id";
@@ -40,37 +41,42 @@ public class ContactsDB {
 
     private final SQLiteDatabase database;
 
-    public ContactsDB(Context context) {
+    public ContactSQLiteRepository(Context context) {
         OpenHelper openHelper = new OpenHelper(context);
         database = openHelper.getWritableDatabase();
     }
 
-    public long insert(Contact contact) {
+    public void insert(Contact contact) {
         ContentValues cv = new ContentValues();
         cv.put(COLUMN_FIRST_NAME, contact.getFirstName());
         cv.put(COLUMN_LAST_NAME, contact.getLastName());
         cv.put(COLUMN_MIDDLE_NAME, contact.getMiddleName());
         cv.put(COLUMN_PHONE_NUMBER, contact.getPhoneNumber());
         cv.put(COLUMN_DATE_OF_BIRTH, formatDate(contact.getDateOfBirth()));
-        return database.insert(TABLE_NAME, null, cv);
+        long id = database.insert(TABLE_NAME, null, cv);
+        contact.setID(id);
     }
 
-    public int update(Contact contact) {
+    public void update(Contact contact) {
         ContentValues cv = new ContentValues();
         cv.put(COLUMN_FIRST_NAME, contact.getFirstName());
         cv.put(COLUMN_LAST_NAME, contact.getLastName());
         cv.put(COLUMN_MIDDLE_NAME, contact.getMiddleName());
         cv.put(COLUMN_PHONE_NUMBER, contact.getPhoneNumber());
         cv.put(COLUMN_DATE_OF_BIRTH, formatDate(contact.getDateOfBirth()));
-        return database.update(TABLE_NAME, cv, COLUMN_ID + " = ?", new String[]{String.valueOf(contact.getID())});
+        database.update(TABLE_NAME, cv, COLUMN_ID + " = ?", new String[]{String.valueOf(contact.getID())});
     }
 
-    public int deleteAll() {
-        return database.delete(TABLE_NAME, null, null);
+    public void deleteAll() {
+        database.delete(TABLE_NAME, null, null);
     }
 
-    public int delete(long id) {
-        return database.delete(TABLE_NAME, COLUMN_ID + " = ?", new String[]{String.valueOf(id)});
+    public void delete(long id) {
+        database.delete(TABLE_NAME, COLUMN_ID + " = ?", new String[]{String.valueOf(id)});
+    }
+
+    public void delete(Contact contact) {
+        this.delete(contact.getID());
     }
 
     public Contact select(long id) {
@@ -129,7 +135,7 @@ public class ContactsDB {
         return date != null ? date.format(DATE_TIME_FORMATTER) : null;
     }
 
-    public static @Nullable LocalDate parseDate(@Nullable String rawDate) {
+    private static @Nullable LocalDate parseDate(@Nullable String rawDate) {
         return rawDate != null ? LocalDate.parse(rawDate, DATE_TIME_FORMATTER) : null;
     }
 
@@ -141,7 +147,7 @@ public class ContactsDB {
         @Override
         public void onCreate(SQLiteDatabase db) {
             String query = "CREATE TABLE " + TABLE_NAME + " (" +
-                    COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
                     COLUMN_FIRST_NAME + " TEXT NOT NULL, " +
                     COLUMN_LAST_NAME + " TEXT NOT NULL, " +
                     COLUMN_MIDDLE_NAME + " TEXT NOT NULL, " +

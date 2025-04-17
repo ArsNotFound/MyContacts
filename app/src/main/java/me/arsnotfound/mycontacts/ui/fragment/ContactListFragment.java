@@ -14,22 +14,23 @@ import java.util.List;
 
 import me.arsnotfound.mycontacts.MyContactsApplication;
 import me.arsnotfound.mycontacts.data.Contact;
+import me.arsnotfound.mycontacts.data.ContactRepository;
 import me.arsnotfound.mycontacts.databinding.FragmentContactListBinding;
-import me.arsnotfound.mycontacts.repo.ContactsDB;
+import me.arsnotfound.mycontacts.repo.sqlite.ContactSQLiteRepository;
 import me.arsnotfound.mycontacts.ui.adapter.ContactAdapter;
 
 public class ContactListFragment extends Fragment {
     private FragmentContactListBinding binding = null;
 
-    private ContactsDB db;
+    private ContactRepository repo;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentContactListBinding.inflate(inflater, container, false);
-        db = ((MyContactsApplication) getActivity().getApplication()).getContactsDB();
+        repo = ((MyContactsApplication) getActivity().getApplication()).getContactRepository();
 
-        List<Contact> contacts = db.selectAll();
+        List<Contact> contacts = repo.selectAll();
         ContactAdapter adapter = new ContactAdapter(getContext(), contacts);
         adapter.setOnItemClickListener((view, contact) -> {
             ContactListFragmentDirections.NavigateToContactInfoFragment directions =
@@ -52,6 +53,6 @@ public class ContactListFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
-        db = null;
+        repo = null;
     }
 }

@@ -46,7 +46,11 @@ dependencies {
     implementation(libs.navigation.fragment)
     implementation(libs.recyclerview)
 
+    implementation(libs.room.runtime)
+    annotationProcessor(libs.room.compiler)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    testImplementation(libs.room.testing)
 }

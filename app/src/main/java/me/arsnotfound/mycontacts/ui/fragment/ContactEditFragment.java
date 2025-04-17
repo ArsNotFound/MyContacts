@@ -10,12 +10,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import me.arsnotfound.mycontacts.databinding.FragmentContactEditBinding;
-import me.arsnotfound.mycontacts.repo.ContactsDB;
+import me.arsnotfound.mycontacts.repo.sqlite.ContactSQLiteRepository;
 
 public class ContactEditFragment extends Fragment {
     private FragmentContactEditBinding binding;
 
-    private ContactsDB db;
+    private ContactSQLiteRepository db;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
