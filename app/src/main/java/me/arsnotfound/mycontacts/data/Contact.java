@@ -1,8 +1,7 @@
 package me.arsnotfound.mycontacts.data;
 
+import android.os.Build;
 import android.os.Parcel;
-
-import androidx.annotation.NonNull;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -61,12 +60,18 @@ public class Contact {
         this(firstName, "", phoneNumber);
     }
 
+    @SuppressWarnings("deprecation")
     protected Contact(Parcel in) {
         firstName = in.readString();
         lastName = in.readString();
         middleName = in.readString();
         phoneNumber = in.readString();
-        dateOfBirth = (LocalDate) in.readSerializable();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            dateOfBirth = in.readSerializable(LocalDate.class.getClassLoader(), LocalDate.class);
+        } else {
+            dateOfBirth = (LocalDate) in.readSerializable();
+        }
     }
 
     public long getID() {
@@ -133,7 +138,7 @@ public class Contact {
         return Objects.hashCode(phoneNumber);
     }
 
-    @NonNull
+    @NotNull
     @Override
     public String toString() {
         return "Contact{" +

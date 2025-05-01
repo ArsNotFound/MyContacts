@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.androidx.navigation.safeargs)
     alias(libs.plugins.room)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -20,6 +21,7 @@ android {
 
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 
     buildTypes {
@@ -38,6 +40,10 @@ android {
     }
 }
 
+tasks.withType(JavaCompile::class.java).configureEach {
+    options.compilerArgs.add("-Xlint:deprecation")
+}
+
 room {
     schemaDirectory("$projectDir/schemas")
 }
@@ -53,6 +59,9 @@ dependencies {
 
     implementation(libs.room.runtime)
     annotationProcessor(libs.room.compiler)
+
+    implementation(libs.hilt.android)
+    annotationProcessor(libs.hilt.android.compiler)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)

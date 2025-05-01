@@ -1,6 +1,13 @@
 package me.arsnotfound.mycontacts.repo.room;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Transformations;
+
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+
+import javax.inject.Inject;
 
 import me.arsnotfound.mycontacts.data.Contact;
 import me.arsnotfound.mycontacts.data.ContactRepository;
@@ -11,42 +18,44 @@ public class ContactRoomRepository implements ContactRepository {
 
     private final ContactDao dao;
 
-    public ContactRoomRepository(ContactDao dao) {
+    private final Executor executor = Executors.newFixedThreadPool(4);
+
+    public @Inject ContactRoomRepository(ContactDao dao) {
         this.dao = dao;
     }
 
     @Override
-    public void insert(Contact contact) {
-        dao.insert(ContactMapper.toEntity(contact));
+    public void insert(final Contact contact) {
+        executor.execute(() -> dao.insert(ContactMapper.toEntity(contact)));
     }
 
     @Override
-    public void update(Contact contact) {
-        dao.update(ContactMapper.toEntity(contact));
+    public void update(final Contact contact) {
+        executor.execute(() -> dao.update(ContactMapper.toEntity(contact)));
     }
 
     @Override
     public void deleteAll() {
-        dao.deleteAll();
+        executor.execute(dao::deleteAll);
     }
 
     @Override
-    public void delete(long id) {
-        dao.delete(id);
+    public void delete(final long id) {
+        executor.execute(() -> dao.delete(id));
     }
 
     @Override
-    public void delete(Contact contact) {
-        dao.delete(ContactMapper.toEntity(contact));
+    public void delete(final Contact contact) {
+        executor.execute(() -> dao.delete(ContactMapper.toEntity(contact)));
     }
 
     @Override
-    public Contact select(long id) {
-        return ContactMapper.fromEntity(dao.select(id));
+    public LiveData<Contact> select(long id) {
+        return Transformations.map(dao.select(id), ContactMapper::fromEntity);
     }
 
     @Override
-    public List<Contact> selectAll() {
-        return ContactMapper.fromEntity(dao.selectAll());
+    public LiveData<List<Contact>> selectAll() {
+        return Transformations.map(dao.selectAll(), ContactMapper::fromEntity);
     }
 }

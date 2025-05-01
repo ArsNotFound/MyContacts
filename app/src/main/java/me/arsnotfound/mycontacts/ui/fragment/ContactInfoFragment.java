@@ -9,16 +9,20 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import me.arsnotfound.mycontacts.MyContactsApplication;
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
 import me.arsnotfound.mycontacts.data.Contact;
 import me.arsnotfound.mycontacts.data.ContactRepository;
 import me.arsnotfound.mycontacts.databinding.FragmentContactInfoBinding;
-import me.arsnotfound.mycontacts.repo.room.dao.ContactDao;
 
+
+@AndroidEntryPoint
 public class ContactInfoFragment extends Fragment {
     private FragmentContactInfoBinding binding;
 
-    private ContactRepository repo;
+    @Inject
+    protected ContactRepository repo;
 
     private ContactInfoFragmentArgs args;
 
@@ -31,23 +35,22 @@ public class ContactInfoFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-       binding = FragmentContactInfoBinding.inflate(inflater, container, false);
-       repo = ((MyContactsApplication)getActivity().getApplication()).getContactRepository();
+        binding = FragmentContactInfoBinding.inflate(inflater, container, false);
 
-       long contactId = args.getContactId();
+        long contactId = args.getContactId();
 
-       Contact contact = repo.select(contactId);
+        Contact contact = repo.select(contactId).getValue();
 
-       binding.contactLastName.setValue(contact.getLastName());
-       binding.contactFirstName.setValue(contact.getFirstName());
-       binding.contactMiddleName.setValue(contact.getMiddleName());
-       binding.contactPhoneNumber.setValue(contact.getPhoneNumber());
-       if (contact.getDateOfBirth() != null)
-           binding.contactDayOfBirth.setValue(contact.getDateOfBirth().toString());
-       else
-           binding.contactDayOfBirth.setValue("Не указано");
+        binding.contactLastName.setValue(contact.getLastName());
+        binding.contactFirstName.setValue(contact.getFirstName());
+        binding.contactMiddleName.setValue(contact.getMiddleName());
+        binding.contactPhoneNumber.setValue(contact.getPhoneNumber());
+        if (contact.getDateOfBirth() != null)
+            binding.contactDayOfBirth.setValue(contact.getDateOfBirth().toString());
+        else
+            binding.contactDayOfBirth.setValue("Не указано");
 
-       return binding.getRoot();
+        return binding.getRoot();
     }
 
     @Override

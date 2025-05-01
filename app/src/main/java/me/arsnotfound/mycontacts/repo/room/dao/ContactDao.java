@@ -1,5 +1,6 @@
 package me.arsnotfound.mycontacts.repo.room.dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -28,8 +29,8 @@ public interface ContactDao {
     int deleteAll();
 
     @Query("SELECT * FROM contacts WHERE id = (:id)")
-    ContactEntity select(long id);
+    LiveData<ContactEntity> select(long id);
 
     @Query("SELECT * FROM contacts")
-    List<ContactEntity> selectAll();
+    LiveData<List<ContactEntity>> selectAll();
 }

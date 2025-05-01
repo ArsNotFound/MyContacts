@@ -9,13 +9,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import me.arsnotfound.mycontacts.databinding.FragmentContactEditBinding;
-import me.arsnotfound.mycontacts.repo.sqlite.ContactSQLiteRepository;
+import javax.inject.Inject;
 
+import dagger.hilt.android.AndroidEntryPoint;
+import me.arsnotfound.mycontacts.data.ContactRepository;
+import me.arsnotfound.mycontacts.databinding.FragmentContactEditBinding;
+
+@AndroidEntryPoint
 public class ContactEditFragment extends Fragment {
     private FragmentContactEditBinding binding;
 
-    private ContactSQLiteRepository db;
+    @Inject
+    protected ContactRepository repo;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -26,8 +31,6 @@ public class ContactEditFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentContactEditBinding.inflate(inflater, container, false);
-
-
 
         return binding.getRoot();
     }

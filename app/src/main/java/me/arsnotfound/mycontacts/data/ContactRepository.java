@@ -1,5 +1,7 @@
 package me.arsnotfound.mycontacts.data;
 
+import androidx.lifecycle.LiveData;
+
 import java.util.List;
 
 public interface ContactRepository {
@@ -13,7 +15,7 @@ public interface ContactRepository {
 
     void delete(Contact contact);
 
-    Contact select(long id);
+    LiveData<Contact> select(long id);
 
-    List<Contact> selectAll();
+    LiveData<List<Contact>> selectAll();
 }

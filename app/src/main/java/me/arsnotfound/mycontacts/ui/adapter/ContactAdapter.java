@@ -15,7 +15,7 @@ import me.arsnotfound.mycontacts.databinding.ItemListContactBinding;
 
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHolder> {
     private final LayoutInflater inflater;
-    private final List<Contact> contactList;
+    private List<Contact> contactList;
     private OnItemClickListener onItemClickListener;
 
     private OnItemClickListener onItemLongClickListener;
@@ -52,6 +52,11 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
     @Override
     public int getItemCount() {
         return contactList.size();
+    }
+
+    public void updateList(List<Contact> contactList) {
+        this.contactList = contactList;
+        this.notifyDataSetChanged();
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
